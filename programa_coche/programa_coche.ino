@@ -55,6 +55,7 @@ void parar(void)
   digitalWrite(MDAtras, LOW);
   digitalWrite(MDAdelante, LOW);
   estaAvanzando = false;
+  Serial.println("Parar");
 }
 void avanzar(void)
 {
@@ -77,6 +78,7 @@ void retroceder(void)
   //digitalWrite(MDAtras, HIGH);
   analogWrite(MDAtras, calcularCicloMotor(potenciaRelativaMotor(potenciaDerecho)));
   digitalWrite(MDAdelante, LOW);
+  Serial.println("Retrocediendo");
 }
 void derecha(void)
 {
@@ -251,16 +253,16 @@ void setup()
   pinMode(LED2, OUTPUT);
   inicializadaWIFI = false;
   estaAvanzando = false;
-  /*for (kkl = 0; kkl < 35; kkl++)
+  for (kkl = 0; kkl < SegundosInicializacionWIFI; kkl++)
   {
     digitalWrite(LED1, HIGH);
-    digitalWrite(LED2, HIGH);
-    delay(500);//延时500M秒，
-    digitalWrite(LED1, LOW);
     digitalWrite(LED2, LOW);
     delay(500);
-  }*/
-  Serial.begin(9600);//设置波特率为9600bps
+    digitalWrite(LED1, LOW);
+    digitalWrite(LED2, HIGH);
+    delay(500);
+  }
+  Serial.begin(9600);
   lkf = 0;
 }
 
@@ -281,6 +283,7 @@ void loop()
     Serial.print("Distancia: ");Serial.print(distance);Serial.println(" cm");
   }*/
   
+  
   if(!inicializadaWIFI && millis() > (SegundosInicializacionWIFI * 1000))
   {
     for (kkl = 0; kkl < 30; kkl++)
@@ -294,6 +297,7 @@ void loop()
     }
     inicializadaWIFI = true;    
   }
+  
   
   if(estaAvanzando)
   {

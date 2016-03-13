@@ -22,9 +22,9 @@ const int DistanciaMinima = 6;
 const long SegundosInicializacionWIFI = 40;
 
 int potenciaMotor = 100;
-int potenciaIzquierdo = 80;
+int potenciaIzquierdo = 100;
 int potenciaDerecho = 100;
-int potenciaGiro = 70;
+int potenciaGiro = 50;
 boolean estaAvanzando = false;
 boolean inicializadaWIFI = false;
 
@@ -59,21 +59,22 @@ void parar(void)
 }
 void avanzar(void)
 {
+  digitalWrite(MIAtras, LOW);
+  digitalWrite(MDAtras, LOW);
+  //digitalWrite(MIAdelante, HIGH);
+  //digitalWrite(MDAdelante, HIGH);
+  analogWrite(MIAdelante, calcularCicloMotor(potenciaRelativaMotor(potenciaIzquierdo)));
+  analogWrite(MDAdelante, calcularCicloMotor(potenciaRelativaMotor(potenciaDerecho)));
+  estaAvanzando = true;
+  
   Serial.print("Avanzando al ");Serial.print(potenciaMotor);Serial.println(" %");
   Serial.print("Ciclo de trabajo izquierdo ");Serial.print(calcularCicloMotor(potenciaRelativaMotor(potenciaIzquierdo)));Serial.println("/255");
   Serial.print("Ciclo de trabajo derecho ");Serial.print(calcularCicloMotor(potenciaRelativaMotor(potenciaDerecho)));Serial.println("/255");
-  digitalWrite(MIAtras, LOW);
-  //digitalWrite(MIAdelante, HIGH);
-  analogWrite(MIAdelante, calcularCicloMotor(potenciaRelativaMotor(potenciaIzquierdo)));
-  digitalWrite(MDAtras, LOW);
-  //digitalWrite(MDAdelante, HIGH);
-  analogWrite(MDAdelante, calcularCicloMotor(potenciaRelativaMotor(potenciaDerecho)));
-  estaAvanzando = true;
 }
 void retroceder(void)
 {
   //digitalWrite(MIAtras, HIGH);
-  analogWrite(MIAtras, calcularCicloMotor(potenciaRelativaMotor(potenciaDerecho)));
+  analogWrite(MIAtras, calcularCicloMotor(potenciaRelativaMotor(potenciaIzquierdo)));
   digitalWrite(MIAdelante, LOW);
   //digitalWrite(MDAtras, HIGH);
   analogWrite(MDAtras, calcularCicloMotor(potenciaRelativaMotor(potenciaDerecho)));
